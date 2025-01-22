@@ -1,6 +1,5 @@
 package ports
 
 type ICrawler interface {
-	Crawl(url string) ([]string, error)
-	ExtractLinks(htmlContent string) []string
+	Crawl(curl <-chan string, cContent chan<- string)
 }

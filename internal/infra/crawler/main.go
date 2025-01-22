@@ -3,24 +3,45 @@ package crawler
 import (
 	"io"
 	"net/http"
-	"regexp"
+
+	"github.com/sandronister/webcrawler/internal/ports"
 )
 
 type Crawler struct {
-	links []string
+	links   []string
+	visited []string
+	logger  ports.ILog
 }
 
-func NewCrawler() *Crawler {
+func NewCrawler(logger ports.ILog) *Crawler {
 	return &Crawler{
-		links: []string{},
+		links:   []string{},
+		visited: []string{},
+		logger:  logger,
 	}
 }
 
-func (c *Crawler) Crawl(url string) ([]string, error) {
+func (c *Crawler) isVisited(url string) bool {
+	for _, v := range c.visited {
+		if v == url {
+			return true
+		}
+	}
+
+	c.visited = append(c.visited, url)
+	return false
+}
+
+func (c *Crawler) Crawl(curl <-chan string, cContent chan<- string) {
+	url := <-curl
+	if c.isVisited(url) {
+		return
+	}
+
 	resp, err := http.Get(url)
 
 	if err != nil {
-		return nil, err
+		c.logger.Log("Crawler", err.Error())
 	}
 
 	defer resp.Body.Close()
@@ -28,21 +49,9 @@ func (c *Crawler) Crawl(url string) ([]string, error) {
 	content, err := io.ReadAll(resp.Body)
 
 	if err != nil {
-		return nil, err
+		c.logger.Log("Crawler", err.Error())
 	}
 
-	return c.ExtractLinks(string(content)), nil
+	cContent <- string(content)
 
-}
-
-func (c *Crawler) ExtractLinks(htmlContent string) []string {
-	var links []string
-	re := regexp.MustCompile(`href="(http[s]?://[^"]+)"`)
-	matches := re.FindAllStringSubmatch(htmlContent, -1)
-	for _, match := range matches {
-		if len(match) > 1 {
-			links = append(links, match[1])
-		}
-	}
-	return links
 }

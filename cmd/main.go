@@ -1,27 +1,16 @@
 package main
 
 import (
-	"fmt"
-
-	"github.com/sandronister/webcrawler/internal/infra/crawler"
+	"github.com/sandronister/webcrawler/internal/di"
+	"github.com/sandronister/webcrawler/internal/infra/logCrawller"
 )
 
 func main() {
-	url := "https://comprecar.com.br"
-	fmt.Printf("Fetching URL: %s\n", url)
+	url := "https://www.sandronister.com.br"
 
-	crawler := crawler.NewCrawler()
-	links, err := crawler.Crawl(url)
+	logger := logCrawller.NewLog()
 
-	if err != nil {
-		fmt.Printf("Erro ao buscar URL: %s\n", err)
-		return
-	}
+	reader := di.NewReader(logger)
 
-	fmt.Println("Links encontrados:")
-
-	for _, link := range links {
-		fmt.Println(link)
-	}
-
+	reader.Read(url)
 }
