@@ -32,26 +32,27 @@ func (c *Crawler) isVisited(url string) bool {
 	return false
 }
 
-func (c *Crawler) Crawl(curl <-chan string, cContent chan<- string) {
-	url := <-curl
-	if c.isVisited(url) {
-		return
+func (c *Crawler) Crawl(curl <-chan string, cContent chan<- string, cHTML chan<- string) {
+	for url := range curl {
+		if c.isVisited(url) {
+			return
+		}
+
+		resp, err := http.Get(url)
+
+		if err != nil {
+			c.logger.Log("Crawler", err.Error())
+		}
+
+		defer resp.Body.Close()
+
+		content, err := io.ReadAll(resp.Body)
+
+		if err != nil {
+			c.logger.Log("Crawler", err.Error())
+		}
+
+		cHTML <- string(content)
+		cContent <- string(content)
 	}
-
-	resp, err := http.Get(url)
-
-	if err != nil {
-		c.logger.Log("Crawler", err.Error())
-	}
-
-	defer resp.Body.Close()
-
-	content, err := io.ReadAll(resp.Body)
-
-	if err != nil {
-		c.logger.Log("Crawler", err.Error())
-	}
-
-	cContent <- string(content)
-
 }
