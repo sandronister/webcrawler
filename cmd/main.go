@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/sandronister/webcrawler/internal/web/crawler"
+	"github.com/sandronister/webcrawler/internal/infra/crawler"
 )
 
 func main() {
@@ -11,7 +11,12 @@ func main() {
 	fmt.Printf("Fetching URL: %s\n", url)
 
 	crawler := crawler.NewCrawler()
-	links := crawler.Crawl(url)
+	links, err := crawler.Crawl(url)
+
+	if err != nil {
+		fmt.Printf("Erro ao buscar URL: %s\n", err)
+		return
+	}
 
 	fmt.Println("Links encontrados:")
 

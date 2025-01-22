@@ -16,11 +16,11 @@ func NewCrawler() *Crawler {
 	}
 }
 
-func (c *Crawler) Crawl(url string) []string {
+func (c *Crawler) Crawl(url string) ([]string, error) {
 	resp, err := http.Get(url)
 
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	defer resp.Body.Close()
@@ -28,10 +28,10 @@ func (c *Crawler) Crawl(url string) []string {
 	content, err := io.ReadAll(resp.Body)
 
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
-	return c.ExtractLinks(string(content))
+	return c.ExtractLinks(string(content)), nil
 
 }
 
