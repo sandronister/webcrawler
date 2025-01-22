@@ -1,14 +1,15 @@
 package reader
 
-import "github.com/sandronister/webcrawler/internal/ports"
+import (
+	"fmt"
+
+	"github.com/sandronister/webcrawler/internal/ports"
+)
 
 type Reader struct {
 	crawler    ports.ICrawler
 	parser     ports.IParser
 	repository ports.IRepository
-	cUrl       chan string
-	cContent   chan string
-	cHTML      chan string
 }
 
 func NewReader(crawler ports.ICrawler, parser ports.IParser, repository ports.IRepository) *Reader {
@@ -16,24 +17,33 @@ func NewReader(crawler ports.ICrawler, parser ports.IParser, repository ports.IR
 		crawler:    crawler,
 		parser:     parser,
 		repository: repository,
-		cUrl:       make(chan string),
-		cContent:   make(chan string),
-		cHTML:      make(chan string),
+	}
+}
+
+func (r *Reader) Load(cUrl <-chan string) {
+	for url := range cUrl {
+		_, err := r.crawler.Crawl(url)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println("url: ", url)
 	}
 }
 
 func (r *Reader) Read(url string) {
-	r.cUrl <- url
 
-	for range 5 {
-		go r.repository.Insert(r.cContent)
+	links := make(chan string)
+
+	content, err := r.crawler.Crawl(url)
+
+	if err != nil {
+		panic(err)
 	}
 
-	for range 5 {
-		go r.parser.ExtractLinks(r.cHTML, r.cUrl)
+	for range 9 {
+		go r.Load(links)
 	}
 
-	for range 5 {
-		go r.crawler.Crawl(r.cUrl, r.cContent, r.cHTML)
-	}
+	r.parser.ExtractLinks(content, links)
+
 }

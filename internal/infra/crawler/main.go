@@ -1,6 +1,7 @@
 package crawler
 
 import (
+	"fmt"
 	"io"
 	"net/http"
 
@@ -32,27 +33,26 @@ func (c *Crawler) isVisited(url string) bool {
 	return false
 }
 
-func (c *Crawler) Crawl(curl <-chan string, cContent chan<- string, cHTML chan<- string) {
-	for url := range curl {
-		if c.isVisited(url) {
-			return
-		}
-
-		resp, err := http.Get(url)
-
-		if err != nil {
-			c.logger.Log("Crawler", err.Error())
-		}
-
-		defer resp.Body.Close()
-
-		content, err := io.ReadAll(resp.Body)
-
-		if err != nil {
-			c.logger.Log("Crawler", err.Error())
-		}
-
-		cHTML <- string(content)
-		cContent <- string(content)
+func (c *Crawler) Crawl(url string) (string, error) {
+	if c.isVisited(url) {
+		return "", nil
 	}
+
+	fmt.Println("Crawling", url)
+	resp, err := http.Get(url)
+
+	if err != nil {
+		return "", err
+	}
+
+	defer resp.Body.Close()
+
+	content, err := io.ReadAll(resp.Body)
+
+	if err != nil {
+		return "", err
+	}
+
+	return string(content), nil
+
 }

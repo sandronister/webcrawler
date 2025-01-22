@@ -26,14 +26,12 @@ func (p *HtmlParser) RemoveHTMLTags(input string) string {
 	return re.ReplaceAllString(input, "")
 }
 
-func (p *HtmlParser) ExtractLinks(cHTML <-chan string, cUrl chan<- string) {
-	for htmlContent := range cHTML {
-		re := regexp.MustCompile(`href="(http[s]?://[^"]+)"`)
-		matches := re.FindAllStringSubmatch(htmlContent, -1)
-		for _, match := range matches {
-			if len(match) > 1 {
-				cUrl <- match[1]
-			}
+func (p *HtmlParser) ExtractLinks(content string, cUrl chan<- string) {
+	re := regexp.MustCompile(`href="(http[s]?://[^"]+)"`)
+	matches := re.FindAllStringSubmatch(content, -1)
+	for _, match := range matches {
+		if len(match) > 1 {
+			cUrl <- match[1]
 		}
 	}
 }
