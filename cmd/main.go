@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	url := "https://www.sandronister.com.br"
+	url := "https://www.bluebus.com.br/"
 
 	logger := logCrawller.NewLog()
 

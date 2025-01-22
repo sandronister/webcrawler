@@ -9,7 +9,8 @@ import (
 )
 
 func NewReader(logger ports.ILog) *reader.Reader {
-	return reader.NewReader(newCrawler(logger), newParser(), newRepository())
+	parser := newParser()
+	return reader.NewReader(newCrawler(logger), parser, newRepository(parser))
 
 }
 
@@ -21,6 +22,6 @@ func newParser() ports.IParser {
 	return parser.NewHtmlParser()
 }
 
-func newRepository() ports.IRepository {
-	return repository.NewFileRepository("output")
+func newRepository(parser ports.IParser) ports.IRepository {
+	return repository.NewFileRepository("output", parser)
 }
