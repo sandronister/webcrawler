@@ -1,7 +1,6 @@
 package crawler
 
 import (
-	"fmt"
 	"io"
 	"net/http"
 
@@ -38,7 +37,6 @@ func (c *Crawler) Crawl(url string) (string, error) {
 		return "", nil
 	}
 
-	fmt.Println("Crawling", url)
 	resp, err := http.Get(url)
 
 	if err != nil {

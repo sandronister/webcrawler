@@ -1,10 +1,12 @@
-package logCrawller
+package logger
 
 import (
 	"encoding/json"
 	"fmt"
 	"os"
 	"time"
+
+	"github.com/sandronister/webcrawler/internal/infra/system"
 )
 
 type logDTO struct {
@@ -16,10 +18,13 @@ type logDTO struct {
 
 type Log struct {
 	currentTime time.Time
+	system      *system.SystemOS
 }
 
-func NewLog() *Log {
-	return &Log{}
+func NewLog(system *system.SystemOS) *Log {
+	return &Log{
+		system: system,
+	}
 }
 
 func (l *Log) Info(className, message string) {
@@ -48,10 +53,7 @@ func (l *Log) Error(className, message string) {
 }
 
 func (l *Log) getPath() string {
-	_, err := os.Stat("logs")
-	if os.IsNotExist(err) {
-		os.Mkdir("logs", 0755)
-	}
+	l.system.Folder("logs")
 	return fmt.Sprintf("logs/log_%s.log", l.currentTime.Format("2006-01-02"))
 }
 

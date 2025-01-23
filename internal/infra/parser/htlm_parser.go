@@ -10,7 +10,7 @@ func NewHtmlParser() *HtmlParser {
 }
 
 func (p *HtmlParser) GetTagContet(input, tag string) []string {
-	re := regexp.MustCompile(`<` + tag + `[^>]*>(.*?)</` + tag + `>`)
+	re := regexp.MustCompile(`(?s)<` + tag + `[^>]*>(.*?)</` + tag + `>`)
 	matches := re.FindAllStringSubmatch(input, -1)
 	var contents []string
 	for _, match := range matches {

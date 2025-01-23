@@ -24,11 +24,8 @@ func NewReader(crawler ports.ICrawler, parser ports.IParser, repository ports.IR
 
 func (r *Reader) Load(cUrl <-chan string) {
 	for url := range cUrl {
-		_, err := r.crawler.Crawl(url)
-		if err != nil {
-			r.log.Error("Reader", err.Error())
-		}
-		fmt.Println("url: ", url)
+		fmt.Println(url)
+		r.Read(url)
 	}
 }
 
@@ -39,7 +36,14 @@ func (r *Reader) Read(url string) {
 	content, err := r.crawler.Crawl(url)
 
 	if err != nil {
-		r.log.Error("Reader", err.Error())
+		r.log.Error("Reader", fmt.Sprintf("Error crawling url %s: %s", url, err.Error()))
+		return
+	}
+
+	err = r.repository.Insert(url, content)
+
+	if err != nil {
+		r.log.Error("Reader", fmt.Sprintf("Error inserting content: %s from url %s", err.Error(), url))
 	}
 
 	for range 9 {

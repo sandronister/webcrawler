@@ -5,6 +5,7 @@ import (
 	"github.com/sandronister/webcrawler/internal/infra/parser"
 	"github.com/sandronister/webcrawler/internal/infra/reader"
 	"github.com/sandronister/webcrawler/internal/infra/repository"
+	"github.com/sandronister/webcrawler/internal/infra/system"
 	"github.com/sandronister/webcrawler/internal/ports"
 )
 
@@ -23,5 +24,6 @@ func newParser() ports.IParser {
 }
 
 func newRepository(parser ports.IParser) ports.IRepository {
-	return repository.NewFileRepository("output", parser)
+	system := system.NewOS()
+	return repository.NewFileRepository("output", parser, system)
 }
