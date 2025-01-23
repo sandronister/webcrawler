@@ -1,5 +1,6 @@
 package ports
 
 type ILog interface {
-	Log(className, message string)
+	Info(className, message string)
+	Error(className, message string)
 }

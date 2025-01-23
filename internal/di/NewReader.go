@@ -10,7 +10,7 @@ import (
 
 func NewReader(logger ports.ILog) *reader.Reader {
 	parser := newParser()
-	return reader.NewReader(newCrawler(logger), parser, newRepository(parser))
+	return reader.NewReader(newCrawler(logger), parser, newRepository(parser), logger)
 
 }
 

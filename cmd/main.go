@@ -6,9 +6,10 @@ import (
 )
 
 func main() {
-	url := "https://bluebus.com.br"
+	url := "https://apinfo.com"
 
 	logger := logCrawller.NewLog()
+	logger.Info("main", "Starting webcrawler")
 
 	reader := di.NewReader(logger)
 
