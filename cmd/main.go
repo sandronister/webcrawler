@@ -1,13 +1,18 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/sandronister/webcrawler/internal/di"
 	"github.com/sandronister/webcrawler/internal/infra/logger"
 	"github.com/sandronister/webcrawler/internal/infra/system"
 )
 
 func main() {
-	url := "https://apinfo.com"
+	var url string
+	fmt.Print("Informe a URL: ")
+	fmt.Scanln(&url)
+	fmt.Println("URL informada: ", url)
 
 	system := system.NewOS()
 	logger := logger.NewLog(system)
