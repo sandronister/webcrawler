@@ -1,17 +1,18 @@
 package di
 
 import (
+	"github.com/sandronister/go_broker/pkg/broker/types"
 	"github.com/sandronister/webcrawler/internal/infra/crawler"
 	"github.com/sandronister/webcrawler/internal/infra/parser/html"
-	"github.com/sandronister/webcrawler/internal/infra/reader"
+	redisreader "github.com/sandronister/webcrawler/internal/infra/reader/redis_reader"
 	"github.com/sandronister/webcrawler/internal/infra/repository/file"
 	"github.com/sandronister/webcrawler/internal/infra/system"
 	"github.com/sandronister/webcrawler/internal/ports"
 )
 
-func NewReader(logger ports.ILog) *reader.Reader {
+func NewReader(logger ports.ILog, broker types.IBroker) ports.IReader {
 	parser := newParser()
-	return reader.NewReader(newCrawler(logger), parser, newRepository(parser), logger)
+	return redisreader.NewReader(newCrawler(logger), parser, newRepository(parser), logger, broker)
 
 }
 

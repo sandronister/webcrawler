@@ -6,6 +6,7 @@ require (
 	github.com/labstack/echo/v4 v4.13.3
 	github.com/sandronister/go_broker v1.4.3
 	github.com/spf13/viper v1.19.0
+	go.uber.org/zap v1.21.0
 )
 
 require (
