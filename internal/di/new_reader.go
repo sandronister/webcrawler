@@ -2,9 +2,9 @@ package di
 
 import (
 	"github.com/sandronister/webcrawler/internal/infra/crawler"
-	"github.com/sandronister/webcrawler/internal/infra/parser"
+	"github.com/sandronister/webcrawler/internal/infra/parser/html"
 	"github.com/sandronister/webcrawler/internal/infra/reader"
-	"github.com/sandronister/webcrawler/internal/infra/repository"
+	"github.com/sandronister/webcrawler/internal/infra/repository/file"
 	"github.com/sandronister/webcrawler/internal/infra/system"
 	"github.com/sandronister/webcrawler/internal/ports"
 )
@@ -20,10 +20,10 @@ func newCrawler(logger ports.ILog) ports.ICrawler {
 }
 
 func newParser() ports.IParser {
-	return parser.NewHtmlParser()
+	return html.NewHtmlParser()
 }
 
 func newRepository(parser ports.IParser) ports.IRepository {
 	system := system.NewOS()
-	return repository.NewFileRepository("output", parser, system)
+	return file.NewFileRepository("output", parser, system)
 }

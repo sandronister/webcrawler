@@ -17,7 +17,7 @@ func main() {
 		panic(err)
 	}
 
-	broker := factory.GetBroker()
+	broker := factory.NewBroker(conf.BrokerKind, conf.BrokerHost, conf.BrokerPort)
 
 	server := di.NewServer(conf.WebPort, broker)
 	go server.Start()

@@ -1,15 +1,8 @@
-package parser
+package html
 
 import "regexp"
 
-type HtmlParser struct {
-}
-
-func NewHtmlParser() *HtmlParser {
-	return &HtmlParser{}
-}
-
-func (p *HtmlParser) GetTagContet(input, tag string) []string {
+func (p *Model) GetTagContet(input, tag string) []string {
 	re := regexp.MustCompile(`(?s)<` + tag + `[^>]*>(.*?)</` + tag + `>`)
 	matches := re.FindAllStringSubmatch(input, -1)
 	var contents []string
@@ -21,12 +14,12 @@ func (p *HtmlParser) GetTagContet(input, tag string) []string {
 	return contents
 }
 
-func (p *HtmlParser) RemoveHTMLTags(input string) string {
+func (p *Model) RemoveHTMLTags(input string) string {
 	re := regexp.MustCompile(`<.*?>`)
 	return re.ReplaceAllString(input, "")
 }
 
-func (p *HtmlParser) ExtractLinks(content string, cUrl chan<- string) {
+func (p *Model) ExtractLinks(content string, cUrl chan<- string) {
 	re := regexp.MustCompile(`href="(http[s]?://[^"]+)"`)
 	matches := re.FindAllStringSubmatch(content, -1)
 	for _, match := range matches {

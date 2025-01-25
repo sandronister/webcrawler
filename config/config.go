@@ -6,7 +6,7 @@ import (
 
 type Enviroment struct {
 	WebPort    string `mapstructure:"WEB_PORT"`
-	BrokerPort string `mapstructure:"BROKER_PORT"`
+	BrokerPort int    `mapstructure:"BROKER_PORT"`
 	BrokerHost string `mapstructure:"BROKER_HOST"`
 	BrokerKind string `mapstructure:"BROKER_KIND"`
 }

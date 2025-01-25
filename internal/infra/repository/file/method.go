@@ -1,28 +1,11 @@
-package repository
+package file
 
 import (
 	"fmt"
 	"strings"
-
-	"github.com/sandronister/webcrawler/internal/infra/system"
-	"github.com/sandronister/webcrawler/internal/ports"
 )
 
-type FileRepository struct {
-	folder string
-	parser ports.IParser
-	system *system.SystemOS
-}
-
-func NewFileRepository(folder string, parser ports.IParser, system *system.SystemOS) *FileRepository {
-	return &FileRepository{
-		folder: folder,
-		parser: parser,
-		system: system,
-	}
-}
-
-func (r *FileRepository) getFilePath(url string) string {
+func (r *Model) getFilePath(url string) string {
 	r.system.Folder(r.folder)
 
 	sanitizedUrl := strings.ReplaceAll(url, "://", "_")
@@ -33,7 +16,7 @@ func (r *FileRepository) getFilePath(url string) string {
 	return filePath
 }
 
-func (r *FileRepository) Insert(url, content string) error {
+func (r *Model) Insert(url, content string) error {
 	if strings.Contains(url, ".png") || strings.Contains(url, ".css") {
 		return nil
 	}
