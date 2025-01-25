@@ -13,14 +13,16 @@ import (
 )
 
 func webServer(env *config.Enviroment, broker types.IBroker) {
-	server := di.NewServer(env.WebPort, broker)
+	server := di.NewServer(env.WebPort, broker, env)
 	server.Start()
 
 }
 
-func consumerBroker(broker types.IBroker, message chan<- types.Message, logger typelogger.ILogger) {
+func consumerBroker(broker types.IBroker, message chan<- types.Message, logger typelogger.ILogger, env *config.Enviroment) {
+
+	fmt.Printf("Consuming message from topic %s\n", env.BrokerTopic)
 	configBroker := &types.ConfigBroker{
-		Topic: []string{"page"},
+		Topic: []string{env.BrokerTopic},
 	}
 
 	err := broker.Consumer(configBroker, message)
@@ -60,15 +62,20 @@ func main() {
 
 	logger := getLogger(env)
 
+	logger.Info("Starting webcrawler")
+
 	broker := factory.NewBroker(env.BrokerKind, env.BrokerHost, env.BrokerPort)
-	reader := di.NewReader(logger, broker)
+	reader := di.NewReader(logger, broker, env)
 
 	for range 8 {
 		go readMessage(message, reader)
 	}
 
-	go consumerBroker(broker, message, logger)
+	go consumerBroker(broker, message, logger, env)
 	go webServer(env, broker)
+
+	fmt.Printf("Web server running on port %s\n", env.WebPort)
+	logger.Info("Web server running on port %s", env.WebPort)
 
 	wg.Wait()
 }

@@ -2,13 +2,17 @@ package redisreader
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/sandronister/go_broker/pkg/broker/types"
 )
 
 func (r *Model) Read(url string) {
 
+	fmt.Printf("Reading url %s\n", url)
 	link := make(chan string)
+
+	time.Sleep(10 * time.Second)
 
 	content, err := r.ReadContent(url)
 
@@ -25,7 +29,6 @@ func (r *Model) Read(url string) {
 }
 
 func (r *Model) ReadContent(url string) (string, error) {
-
 	content, err := r.crawler.Crawl(url)
 
 	if err != nil {
@@ -56,7 +59,7 @@ func (r *Model) SaveContent(url, content string) error {
 func (r *Model) SendLink(link <-chan string) {
 	for l := range link {
 		msg := &types.Message{
-			Topic: "pages",
+			Topic: r.env.BrokerTopic,
 			Value: []byte(l),
 		}
 		r.broker.Producer(msg)

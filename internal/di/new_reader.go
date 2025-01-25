@@ -2,6 +2,7 @@ package di
 
 import (
 	"github.com/sandronister/go_broker/pkg/broker/types"
+	"github.com/sandronister/webcrawler/config"
 	"github.com/sandronister/webcrawler/internal/infra/crawler"
 	"github.com/sandronister/webcrawler/internal/infra/parser/html"
 	redisreader "github.com/sandronister/webcrawler/internal/infra/reader/redis_reader"
@@ -11,9 +12,9 @@ import (
 	typelogger "github.com/sandronister/webcrawler/pkg/logger/types"
 )
 
-func NewReader(logger typelogger.ILogger, broker types.IBroker) ports.IReader {
+func NewReader(logger typelogger.ILogger, broker types.IBroker, env *config.Enviroment) ports.IReader {
 	parser := newParser()
-	return redisreader.NewReader(newCrawler(logger), parser, newRepository(parser), logger, broker)
+	return redisreader.NewReader(newCrawler(logger), parser, newRepository(parser), logger, broker, env)
 
 }
 

@@ -6,7 +6,7 @@ import (
 
 func (u *Model) GetPage(url string) error {
 	message := &types.Message{
-		Topic: "page",
+		Topic: u.env.BrokerTopic,
 		Value: []byte(url),
 	}
 

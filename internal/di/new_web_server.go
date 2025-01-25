@@ -2,22 +2,24 @@ package di
 
 import (
 	"github.com/sandronister/go_broker/pkg/broker/types"
+	"github.com/sandronister/webcrawler/config"
 	"github.com/sandronister/webcrawler/internal/infra/handler/page"
 	echoserver "github.com/sandronister/webcrawler/internal/infra/web/echo_server"
+	"github.com/sandronister/webcrawler/internal/ports"
 	pageusecase "github.com/sandronister/webcrawler/internal/usecase/page"
 )
 
-func NewServer(ports string, broker types.IBroker) *echoserver.Model {
+func NewServer(ports string, broker types.IBroker, env *config.Enviroment) ports.Iserver {
 	server := echoserver.NewServer(ports)
-	handler := NewPageHandler(broker)
+	handler := NewPageHandler(broker, env)
 	server.AddPageHandler(handler)
 	return server
 }
 
-func NewPageHandler(broker types.IBroker) *page.Model {
-	return page.NewPageHandler(NewPageUseCase(broker))
+func NewPageHandler(broker types.IBroker, env *config.Enviroment) *page.Model {
+	return page.NewPageHandler(NewPageUseCase(broker, env))
 }
 
-func NewPageUseCase(broker types.IBroker) *pageusecase.Model {
-	return pageusecase.NewPageUsecase(broker)
+func NewPageUseCase(broker types.IBroker, env *config.Enviroment) *pageusecase.Model {
+	return pageusecase.NewPageUsecase(broker, env)
 }

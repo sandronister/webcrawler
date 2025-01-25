@@ -1,6 +1,8 @@
 package html
 
-import "regexp"
+import (
+	"regexp"
+)
 
 func (p *Model) GetTagContet(input, tag string) []string {
 	re := regexp.MustCompile(`(?s)<` + tag + `[^>]*>(.*?)</` + tag + `>`)
