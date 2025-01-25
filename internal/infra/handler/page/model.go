@@ -1,11 +1,11 @@
 package page
 
-import "github.com/sandronister/webcrawler/internal/usecase"
+import "github.com/sandronister/webcrawler/internal/usecase/page"
 
 type Model struct {
-	usecase *usecase.PageUsecase
+	usecase *page.Model
 }
 
-func NewPageHandler(usecase *usecase.PageUsecase) *Model {
+func NewPageHandler(usecase *page.Model) *Model {
 	return &Model{usecase: usecase}
 }
