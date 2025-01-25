@@ -2,7 +2,6 @@ package redisreader
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/sandronister/go_broker/pkg/broker/types"
 )
@@ -26,7 +25,6 @@ func (r *Model) Read(url string) {
 }
 
 func (r *Model) ReadContent(url string) (string, error) {
-	time.Sleep(30 * time.Second)
 
 	content, err := r.crawler.Crawl(url)
 

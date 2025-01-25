@@ -8,15 +8,16 @@ import (
 	"github.com/sandronister/webcrawler/internal/infra/repository/file"
 	"github.com/sandronister/webcrawler/internal/infra/system"
 	"github.com/sandronister/webcrawler/internal/ports"
+	typelogger "github.com/sandronister/webcrawler/pkg/logger/types"
 )
 
-func NewReader(logger ports.ILog, broker types.IBroker) ports.IReader {
+func NewReader(logger typelogger.ILogger, broker types.IBroker) ports.IReader {
 	parser := newParser()
 	return redisreader.NewReader(newCrawler(logger), parser, newRepository(parser), logger, broker)
 
 }
 
-func newCrawler(logger ports.ILog) ports.ICrawler {
+func newCrawler(logger typelogger.ILogger) ports.ICrawler {
 	return crawler.NewCrawler(logger)
 }
 

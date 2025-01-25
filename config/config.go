@@ -5,10 +5,12 @@ import (
 )
 
 type Enviroment struct {
-	WebPort    string `mapstructure:"WEB_PORT"`
-	BrokerPort int    `mapstructure:"BROKER_PORT"`
-	BrokerHost string `mapstructure:"BROKER_HOST"`
-	BrokerKind string `mapstructure:"BROKER_KIND"`
+	WebPort     string `mapstructure:"WEB_PORT"`
+	BrokerPort  int    `mapstructure:"BROKER_PORT"`
+	BrokerHost  string `mapstructure:"BROKER_HOST"`
+	BrokerKind  string `mapstructure:"BROKER_KIND"`
+	LogPattern  string `mapstructure:"LOG_PATTERN"`
+	BrokerTopic string `mapstructure:"BROKER_TOPIC"`
 }
 
 func LoadEnviroment(path string) (*Enviroment, error) {

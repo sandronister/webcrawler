@@ -21,16 +21,9 @@ func (r *Model) Insert(url, content string) error {
 		return nil
 	}
 
-	textBody := r.parser.GetTagContet(content, "body")
-
-	if len(textBody) == 0 {
-		return fmt.Errorf("no body content found")
-	}
-
-	contentFile := strings.Join(textBody, "\n")
 	filePath := r.getFilePath(url)
 
-	err := r.system.File(contentFile, filePath)
+	err := r.system.File(content, filePath)
 
 	if err != nil {
 		return fmt.Errorf("error writing file: %s", err.Error())

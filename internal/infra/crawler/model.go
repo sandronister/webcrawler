@@ -1,16 +1,16 @@
 package crawler
 
 import (
-	"github.com/sandronister/webcrawler/internal/ports"
+	"github.com/sandronister/webcrawler/pkg/logger/types"
 )
 
 type Crawler struct {
 	links   []string
 	visited []string
-	logger  ports.ILog
+	logger  types.ILogger
 }
 
-func NewCrawler(logger ports.ILog) *Crawler {
+func NewCrawler(logger types.ILogger) *Crawler {
 	return &Crawler{
 		links:   []string{},
 		visited: []string{},
