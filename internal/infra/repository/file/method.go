@@ -12,6 +12,10 @@ func (r *Model) getFilePath(url string) string {
 	sanitizedUrl = strings.ReplaceAll(sanitizedUrl, "/", "_")
 	sanitizedUrl = strings.ReplaceAll(sanitizedUrl, ".", "_")
 
+	if len(sanitizedUrl) > 100 {
+		sanitizedUrl = sanitizedUrl[:100]
+	}
+
 	filePath := fmt.Sprintf("%s/%s.txt", r.folder, sanitizedUrl)
 	return filePath
 }

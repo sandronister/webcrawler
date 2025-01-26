@@ -12,7 +12,9 @@ func (r *Model) Read(url string) {
 	fmt.Printf("Reading url %s\n", url)
 	link := make(chan string)
 
-	time.Sleep(10 * time.Second)
+	if r.env.TimeSleep > 0 {
+		time.Sleep(time.Duration(r.env.TimeSleep) * time.Second)
+	}
 
 	content, err := r.ReadContent(url)
 

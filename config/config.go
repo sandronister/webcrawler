@@ -12,6 +12,7 @@ type Enviroment struct {
 	BrokerTopic string `envconfig:"BROKER_TOPIC"`
 	LogPattern  string `envconfig:"LOG_PATTERN"`
 	BrokerKind  string `envconfig:"BROKER_KIND"`
+	TimeSleep   int    `envconfig:"TIME_SLEEP"`
 }
 
 func LoadEnviroment() (*Enviroment, error) {
