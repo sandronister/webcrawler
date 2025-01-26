@@ -10,8 +10,8 @@ import (
 	typelogger "github.com/sandronister/webcrawler/pkg/logger/types"
 )
 
-func NewServer(ports string, broker types.IBroker, logger typelogger.ILogger, env *config.Enviroment) ports.Iserver {
-	server := echoserver.NewServer(ports)
+func NewServer(broker types.IBroker, logger typelogger.ILogger, env *config.Enviroment) ports.Iserver {
+	server := echoserver.NewServer(env.WebPort)
 	handler := NewPageHandler(broker, logger, env)
 	server.AddPageHandler(handler)
 	return server
