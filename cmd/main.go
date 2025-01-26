@@ -23,6 +23,7 @@ func main() {
 	service, err := di.NewScracppingService(env)
 
 	if err != nil {
+		fmt.Println("merda", err)
 		panic(err)
 	}
 

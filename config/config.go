@@ -6,13 +6,15 @@ import (
 )
 
 type Enviroment struct {
-	WebPort     string `envconfig:"WEB_PORT"`
-	BrokerHost  string `envconfig:"BROKER_HOST"`
-	BrokerPort  string `envconfig:"BROKER_PORT"`
-	BrokerTopic string `envconfig:"BROKER_TOPIC"`
-	LogPattern  string `envconfig:"LOG_PATTERN"`
-	BrokerKind  string `envconfig:"BROKER_KIND"`
-	TimeSleep   int    `envconfig:"TIME_SLEEP"`
+	WebPort        string `envconfig:"WEB_PORT"`
+	BrokerHost     string `envconfig:"BROKER_HOST"`
+	BrokerPort     string `envconfig:"BROKER_PORT"`
+	BrokerTopic    string `envconfig:"BROKER_TOPIC"`
+	LogPattern     string `envconfig:"LOG_PATTERN"`
+	BrokerKind     string `envconfig:"BROKER_KIND"`
+	TimeSleep      int    `envconfig:"TIME_SLEEP"`
+	RepositoryKind string `envconfig:"REPOSITORY_KIND"`
+	SQLiteFile     string `envconfig:"SQLITE_FILE"`
 }
 
 func LoadEnviroment() (*Enviroment, error) {
