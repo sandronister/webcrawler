@@ -11,6 +11,3 @@ func NewPageUsecase(broker types.IBroker) *PageUsecase {
 		broker: broker,
 	}
 }
-
-func (u *PageUsecase) GetPage(url string) error {
-}
