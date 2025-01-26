@@ -7,19 +7,20 @@ import (
 	echoserver "github.com/sandronister/webcrawler/internal/infra/web/echo_server"
 	"github.com/sandronister/webcrawler/internal/ports"
 	pageusecase "github.com/sandronister/webcrawler/internal/usecase/page"
+	typelogger "github.com/sandronister/webcrawler/pkg/logger/types"
 )
 
-func NewServer(ports string, broker types.IBroker, env *config.Enviroment) ports.Iserver {
+func NewServer(ports string, broker types.IBroker, logger typelogger.ILogger, env *config.Enviroment) ports.Iserver {
 	server := echoserver.NewServer(ports)
-	handler := NewPageHandler(broker, env)
+	handler := NewPageHandler(broker, logger, env)
 	server.AddPageHandler(handler)
 	return server
 }
 
-func NewPageHandler(broker types.IBroker, env *config.Enviroment) *page.Model {
-	return page.NewPageHandler(NewPageUseCase(broker, env))
+func NewPageHandler(broker types.IBroker, logger typelogger.ILogger, env *config.Enviroment) *page.Model {
+	return page.NewPageHandler(NewPageUseCase(broker, logger, env))
 }
 
-func NewPageUseCase(broker types.IBroker, env *config.Enviroment) *pageusecase.Model {
-	return pageusecase.NewPageUsecase(broker, env)
+func NewPageUseCase(broker types.IBroker, logger typelogger.ILogger, env *config.Enviroment) *pageusecase.Model {
+	return pageusecase.NewPageUsecase(broker, logger, env)
 }

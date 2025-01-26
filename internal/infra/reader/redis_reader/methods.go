@@ -20,7 +20,7 @@ func (r *Model) Read(url string) {
 		return
 	}
 
-	for range 5 {
+	for range 10 {
 		go r.SendLink(link)
 	}
 

@@ -13,8 +13,8 @@ import (
 	typelogger "github.com/sandronister/webcrawler/pkg/logger/types"
 )
 
-func webServer(env *config.Enviroment, broker types.IBroker) {
-	server := di.NewServer(env.WebPort, broker, env)
+func webServer(env *config.Enviroment, logger typelogger.ILogger, broker types.IBroker) {
+	server := di.NewServer(env.WebPort, broker, logger, env)
 	server.Start()
 
 }
@@ -81,7 +81,7 @@ func main() {
 	}
 
 	go consumerBroker(broker, message, logger, env)
-	go webServer(env, broker)
+	go webServer(env, logger, broker)
 
 	fmt.Printf("Web server running on port %s\n", env.WebPort)
 	logger.Info("Web server running on port %s", env.WebPort)
