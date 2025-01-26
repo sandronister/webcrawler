@@ -1,7 +1,10 @@
 package scrapping
 
 import (
+	"encoding/json"
+
 	"github.com/sandronister/go_broker/pkg/broker/types"
+	"github.com/sandronister/webcrawler/internal/dto"
 )
 
 func (m *Model) WebServer() {
@@ -21,7 +24,17 @@ func (m *Model) ListenToQueue(message chan<- types.Message) {
 }
 
 func (m *Model) ReadMessage(message <-chan types.Message) {
+
 	for msg := range message {
-		m.reader.Read(string(msg.Value))
+
+		var dtoPage dto.PageDTO
+
+		err := json.Unmarshal(msg.Value, &dtoPage)
+
+		if err != nil {
+			m.logger.Error("Error to unmarshal message %s", err.Error())
+		}
+
+		m.reader.Read(&dtoPage)
 	}
 }

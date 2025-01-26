@@ -1,22 +1,24 @@
 package redisreader
 
 import (
+	"encoding/json"
 	"fmt"
 	"time"
 
 	"github.com/sandronister/go_broker/pkg/broker/types"
+	"github.com/sandronister/webcrawler/internal/dto"
 )
 
-func (r *Model) Read(url string) {
+func (r *Model) Read(message *dto.PageDTO) {
 
-	fmt.Printf("Reading url %s\n", url)
-	link := make(chan string)
+	fmt.Printf("Reading url %s\n", message.URL)
+	link := make(chan dto.PageDTO)
 
 	if r.env.TimeSleep > 0 {
 		time.Sleep(time.Duration(r.env.TimeSleep) * time.Second)
 	}
 
-	content, err := r.ReadContent(url)
+	content, err := r.ReadContent(message.URL)
 
 	if err != nil {
 		return
@@ -26,7 +28,7 @@ func (r *Model) Read(url string) {
 		go r.SendLink(link)
 	}
 
-	r.parser.ExtractLinks(content, link)
+	r.parser.ExtractLinks(content, message.Filter, link)
 
 }
 
@@ -58,11 +60,17 @@ func (r *Model) SaveContent(url, content string) error {
 	return nil
 }
 
-func (r *Model) SendLink(link <-chan string) {
+func (r *Model) SendLink(link <-chan dto.PageDTO) {
 	for l := range link {
+		content, err := json.Marshal(l)
+		if err != nil {
+			r.log.Error("Reader", fmt.Sprintf("Error marshalling link: %s", err.Error()))
+			fmt.Println("DEU RUIM")
+		}
+
 		msg := &types.Message{
 			Topic: r.env.BrokerTopic,
-			Value: []byte(l),
+			Value: content,
 		}
 		r.broker.Publish(msg)
 	}

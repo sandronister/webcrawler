@@ -1,5 +1,7 @@
 package ireader
 
+import "github.com/sandronister/webcrawler/internal/dto"
+
 type Type interface {
-	Read(url string)
+	Read(request *dto.PageDTO)
 }

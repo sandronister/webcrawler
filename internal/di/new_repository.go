@@ -43,10 +43,6 @@ func getConnection(env *config.Enviroment) (*sql.DB, error) {
 		return nil, fmt.Errorf("integrity check failed: %s", result)
 	}
 
-	if err != nil {
-		return nil, err
-	}
-
 	return conn, nil
 }
 
