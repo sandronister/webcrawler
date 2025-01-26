@@ -2,23 +2,38 @@ package main
 
 import (
 	"fmt"
+	"sync"
 
+	"github.com/sandronister/go_broker/pkg/broker/types"
+	"github.com/sandronister/webcrawler/config"
 	"github.com/sandronister/webcrawler/internal/di"
-	"github.com/sandronister/webcrawler/internal/infra/logger"
-	"github.com/sandronister/webcrawler/internal/infra/system"
 )
 
 func main() {
-	var url string
-	fmt.Print("Informe a URL: ")
-	fmt.Scanln(&url)
-	fmt.Println("URL informada: ", url)
+	wg := &sync.WaitGroup{}
+	wg.Add(1)
 
-	system := system.NewOS()
-	logger := logger.NewLog(system)
-	logger.Info("main", "Starting webcrawler")
+	message := make(chan types.Message)
+	env, err := config.LoadEnviroment()
 
-	reader := di.NewReader(logger)
+	if err != nil {
+		panic(err)
+	}
 
-	reader.Read(url)
+	service, err := di.NewScracppingService(env)
+
+	if err != nil {
+		panic(err)
+	}
+
+	for range 8 {
+		go service.ReadMessage(message)
+	}
+
+	go service.ListenToQueue(message)
+	go service.WebServer()
+
+	fmt.Printf("Web server running on port %s\n", env.WebPort)
+
+	wg.Wait()
 }

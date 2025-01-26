@@ -3,23 +3,7 @@ package crawler
 import (
 	"io"
 	"net/http"
-
-	"github.com/sandronister/webcrawler/internal/ports"
 )
-
-type Crawler struct {
-	links   []string
-	visited []string
-	logger  ports.ILog
-}
-
-func NewCrawler(logger ports.ILog) *Crawler {
-	return &Crawler{
-		links:   []string{},
-		visited: []string{},
-		logger:  logger,
-	}
-}
 
 func (c *Crawler) isVisited(url string) bool {
 	for _, v := range c.visited {
