@@ -6,5 +6,5 @@ import (
 )
 
 func newParser() iparser.Type {
-	return html.NewHtmlParser()
+	return html.NewHtmlParser(newFilter())
 }

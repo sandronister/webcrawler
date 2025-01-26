@@ -4,6 +4,7 @@ POST http://localhost:8080/api/v1/start
 Content-Type: application/json
 
 {
-    "url": "https://www.bb.com.br/site/"
+    "url": "https://www.bluebus.com.br",
+    "filter":"https://www.bluebus.com.br"
 }
 

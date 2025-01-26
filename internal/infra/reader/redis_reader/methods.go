@@ -1,6 +1,7 @@
 package redisreader
 
 import (
+	"encoding/json"
 	"fmt"
 	"time"
 
@@ -11,7 +12,7 @@ import (
 func (r *Model) Read(message *dto.PageDTO) {
 
 	fmt.Printf("Reading url %s\n", message.URL)
-	link := make(chan string)
+	link := make(chan dto.PageDTO)
 
 	if r.env.TimeSleep > 0 {
 		time.Sleep(time.Duration(r.env.TimeSleep) * time.Second)
@@ -27,7 +28,7 @@ func (r *Model) Read(message *dto.PageDTO) {
 		go r.SendLink(link)
 	}
 
-	r.parser.ExtractLinks(content, link)
+	r.parser.ExtractLinks(content, message.Filter, link)
 
 }
 
@@ -59,11 +60,17 @@ func (r *Model) SaveContent(url, content string) error {
 	return nil
 }
 
-func (r *Model) SendLink(link <-chan string) {
+func (r *Model) SendLink(link <-chan dto.PageDTO) {
 	for l := range link {
+		content, err := json.Marshal(l)
+		if err != nil {
+			r.log.Error("Reader", fmt.Sprintf("Error marshalling link: %s", err.Error()))
+			fmt.Println("DEU RUIM")
+		}
+
 		msg := &types.Message{
 			Topic: r.env.BrokerTopic,
-			Value: []byte(l),
+			Value: content,
 		}
 		r.broker.Publish(msg)
 	}

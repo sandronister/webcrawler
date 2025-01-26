@@ -30,4 +30,5 @@ func (u *Model) GetPage(request *dto.PageDTO) error {
 	}
 
 	return u.broker.Publish(message)
+
 }

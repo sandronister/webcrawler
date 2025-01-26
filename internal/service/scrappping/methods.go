@@ -24,13 +24,17 @@ func (m *Model) ListenToQueue(message chan<- types.Message) {
 }
 
 func (m *Model) ReadMessage(message <-chan types.Message) {
-	var dto *dto.PageDTO
 
 	for msg := range message {
-		err := json.Unmarshal(msg.Value, dto)
+
+		var dtoPage dto.PageDTO
+
+		err := json.Unmarshal(msg.Value, &dtoPage)
+
 		if err != nil {
 			m.logger.Error("Error to unmarshal message %s", err.Error())
 		}
-		m.reader.Read(dto)
+
+		m.reader.Read(&dtoPage)
 	}
 }

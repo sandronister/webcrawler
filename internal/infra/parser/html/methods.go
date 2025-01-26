@@ -2,6 +2,8 @@ package html
 
 import (
 	"regexp"
+
+	"github.com/sandronister/webcrawler/internal/dto"
 )
 
 func (p *Model) GetTagContet(input, tag string) []string {
@@ -21,12 +23,12 @@ func (p *Model) RemoveHTMLTags(input string) string {
 	return re.ReplaceAllString(input, "")
 }
 
-func (p *Model) ExtractLinks(content string, cUrl chan<- string) {
+func (p *Model) ExtractLinks(content, urlFilter string, cPageDTO chan<- dto.PageDTO) {
 	re := regexp.MustCompile(`href="(http[s]?://[^"]+)"`)
 	matches := re.FindAllStringSubmatch(content, -1)
 	for _, match := range matches {
-		if len(match) > 1 {
-			cUrl <- match[1]
+		if p.filter.Filter(match, urlFilter) {
+			cPageDTO <- dto.PageDTO{URL: match[1], Filter: urlFilter}
 		}
 	}
 }
