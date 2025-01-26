@@ -4,6 +4,6 @@ POST http://localhost:8080/api/v1/start
 Content-Type: application/json
 
 {
-    "url": "https://www.apinfo.com/apinfo/"
+    "url": "https:/bluebus.com.br"
 }
 

@@ -10,5 +10,5 @@ func (u *Model) GetPage(url string) error {
 		Value: []byte(url),
 	}
 
-	return u.broker.Producer(message)
+	return u.broker.Publish(message)
 }

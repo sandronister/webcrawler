@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"sync"
 
 	"github.com/sandronister/go_broker/pkg/broker/factory"
@@ -25,7 +26,7 @@ func consumerBroker(broker types.IBroker, message chan<- types.Message, logger t
 		Topic: []string{env.BrokerTopic},
 	}
 
-	err := broker.Consumer(configBroker, message)
+	err := broker.ListenToQueue(configBroker, message)
 
 	if err != nil {
 		fmt.Println("Error to consume message")
@@ -55,7 +56,11 @@ func main() {
 	wg.Add(1)
 
 	message := make(chan types.Message)
-	env, err := config.LoadEnviroment(".")
+	env, err := config.LoadEnviroment()
+
+	fmt.Printf("Env: %v\n", env.BrokerKind)
+
+	fmt.Printf("Env: %v\n", os.Getenv("BROKER_KIND"))
 	if err != nil {
 		panic(err)
 	}
@@ -64,7 +69,11 @@ func main() {
 
 	logger.Info("Starting webcrawler")
 
-	broker := factory.NewBroker(env.BrokerKind, env.BrokerHost, env.BrokerPort)
+	broker, err := factory.GetBroker()
+	if err != nil {
+		logger.Error("Error to create broker %s", err)
+		panic(err)
+	}
 	reader := di.NewReader(logger, broker, env)
 
 	for range 8 {

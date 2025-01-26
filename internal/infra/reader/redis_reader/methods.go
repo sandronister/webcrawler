@@ -62,6 +62,6 @@ func (r *Model) SendLink(link <-chan string) {
 			Topic: r.env.BrokerTopic,
 			Value: []byte(l),
 		}
-		r.broker.Producer(msg)
+		r.broker.Publish(msg)
 	}
 }

@@ -1,34 +1,29 @@
 package config
 
 import (
-	"github.com/spf13/viper"
+	"github.com/joho/godotenv"
+	"github.com/kelseyhightower/envconfig"
 )
 
 type Enviroment struct {
-	WebPort     string `mapstructure:"WEB_PORT"`
-	BrokerPort  int    `mapstructure:"BROKER_PORT"`
-	BrokerHost  string `mapstructure:"BROKER_HOST"`
-	BrokerKind  string `mapstructure:"BROKER_KIND"`
-	LogPattern  string `mapstructure:"LOG_PATTERN"`
-	BrokerTopic string `mapstructure:"BROKER_TOPIC"`
+	WebPort     string `envconfig:"WEB_PORT"`
+	BrokerHost  string `envconfig:"BROKER_HOST"`
+	BrokerPort  string `envconfig:"BROKER_PORT"`
+	BrokerTopic string `envconfig:"BROKER_TOPIC"`
+	LogPattern  string `envconfig:"LOG_PATTERN"`
+	BrokerKind  string `envconfig:"BROKER_KIND"`
 }
 
-func LoadEnviroment(path string) (*Enviroment, error) {
-	var enviroment *Enviroment
-
-	viper.SetConfigName("config")
-	viper.SetConfigType("env")
-	viper.AddConfigPath(path)
-	viper.SetConfigFile(".env")
-	viper.AutomaticEnv()
-
-	if err := viper.ReadInConfig(); err != nil {
+func LoadEnviroment() (*Enviroment, error) {
+	err := godotenv.Load()
+	if err != nil {
 		return nil, err
 	}
 
-	if err := viper.Unmarshal(&enviroment); err != nil {
+	var env Enviroment
+	err = envconfig.Process("", &env)
+	if err != nil {
 		return nil, err
 	}
-
-	return enviroment, nil
+	return &env, nil
 }
