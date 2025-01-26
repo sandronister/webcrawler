@@ -1,8 +1,8 @@
-package ports
+package iserver
 
 import "github.com/sandronister/webcrawler/internal/infra/handler/page"
 
-type Iserver interface {
+type Type interface {
 	Start() error
 	AddPageHandler(t *page.Model)
 }

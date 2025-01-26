@@ -21,5 +21,16 @@ func (m *Model) Create() error {
 		return err
 	}
 
+	_, err = m.db.Exec(`CREATE TABLE IF NOT EXISTS domains (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		domain TEXT NOT NULL,
+		time TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+	);`)
+
+	if err != nil {
+		m.logger.Error(err.Error())
+		return err
+	}
+
 	return nil
 }

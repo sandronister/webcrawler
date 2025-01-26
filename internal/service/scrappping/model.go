@@ -3,19 +3,20 @@ package scrapping
 import (
 	"github.com/sandronister/go_broker/pkg/broker/types"
 	"github.com/sandronister/webcrawler/config"
-	"github.com/sandronister/webcrawler/internal/ports"
+	"github.com/sandronister/webcrawler/internal/ports/ireader"
+	"github.com/sandronister/webcrawler/internal/ports/iserver"
 	typelogger "github.com/sandronister/webcrawler/pkg/logger/types"
 )
 
 type Model struct {
-	server     ports.Iserver
+	server     iserver.Type
 	broker     types.IBroker
 	logger     typelogger.ILogger
-	reader     ports.IReader
+	reader     ireader.Type
 	enviroment *config.Enviroment
 }
 
-func NewScracppingService(server ports.Iserver, broker types.IBroker, logger typelogger.ILogger, reader ports.IReader, enviroment *config.Enviroment) *Model {
+func NewScracppingService(server iserver.Type, broker types.IBroker, logger typelogger.ILogger, reader ireader.Type, enviroment *config.Enviroment) *Model {
 	return &Model{
 		server:     server,
 		broker:     broker,

@@ -9,11 +9,12 @@ import (
 	"github.com/sandronister/webcrawler/internal/infra/repository/file"
 	"github.com/sandronister/webcrawler/internal/infra/repository/sqlite"
 	"github.com/sandronister/webcrawler/internal/infra/system"
-	"github.com/sandronister/webcrawler/internal/ports"
+	"github.com/sandronister/webcrawler/internal/ports/iparser"
+	"github.com/sandronister/webcrawler/internal/ports/irepository"
 	"github.com/sandronister/webcrawler/pkg/logger/types"
 )
 
-func newFileRepository(parser ports.IParser) ports.IRepository {
+func newFileRepository(parser iparser.Type) irepository.Type {
 	system := system.NewOS()
 	return file.NewFileRepository("output", parser, system)
 }
@@ -49,7 +50,7 @@ func getConnection(env *config.Enviroment) (*sql.DB, error) {
 	return conn, nil
 }
 
-func newSQLiteRepository(env *config.Enviroment, logger types.ILogger) (ports.IRepository, error) {
+func newSQLiteRepository(env *config.Enviroment, logger types.ILogger) (irepository.Type, error) {
 	conn, err := getConnection(env)
 
 	if err != nil {
@@ -64,7 +65,7 @@ func newSQLiteRepository(env *config.Enviroment, logger types.ILogger) (ports.IR
 	return sqlite, nil
 }
 
-func newRepository(parser ports.IParser, logger types.ILogger, env *config.Enviroment) (ports.IRepository, error) {
+func newRepository(parser iparser.Type, logger types.ILogger, env *config.Enviroment) (irepository.Type, error) {
 
 	if env.RepositoryKind == "file" || env.RepositoryKind == "" {
 		return newFileRepository(parser), nil
