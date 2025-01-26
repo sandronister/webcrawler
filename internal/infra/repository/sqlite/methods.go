@@ -11,7 +11,7 @@ func (m *Model) Insert(url, content string) error {
 func (m *Model) Create() error {
 	_, err := m.db.Exec(`CREATE TABLE IF NOT EXISTS pages (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
-		url TEXT NOT NULL,
+		url TEXT NOT NULL unique,
 		content TEXT NOT NULL,
 		time TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 	);`)
