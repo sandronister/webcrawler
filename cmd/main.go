@@ -6,7 +6,7 @@ import (
 
 	"github.com/sandronister/webcrawler/config"
 	"github.com/sandronister/webcrawler/internal/di"
-	"github.com/sandronister/webcrawler/pkg/broker_cache/redis/types"
+	"github.com/sandronister/webcrawler/pkg/broker_cache/types"
 )
 
 func main() {
@@ -23,6 +23,7 @@ func main() {
 	service, err := di.NewScracppingService(env)
 
 	if err != nil {
+		fmt.Println("merda", err)
 		panic(err)
 	}
 

@@ -2,7 +2,7 @@ package page
 
 import (
 	"github.com/sandronister/webcrawler/config"
-	"github.com/sandronister/webcrawler/pkg/broker_cache/redis/types"
+	"github.com/sandronister/webcrawler/pkg/broker_cache/types"
 	typelogger "github.com/sandronister/webcrawler/pkg/logger/types"
 )
 

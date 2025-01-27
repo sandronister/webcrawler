@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/sandronister/webcrawler/pkg/broker_cache/redis/types"
+	"github.com/sandronister/webcrawler/pkg/broker_cache/types"
 )
 
 func (m *Model) ListenToQueue(config *types.ConfigBroker, message chan<- types.Message) error {
