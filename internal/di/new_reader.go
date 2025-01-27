@@ -1,7 +1,6 @@
 package di
 
 import (
-	"github.com/sandronister/go_broker/pkg/broker/types"
 	"github.com/sandronister/webcrawler/config"
 	"github.com/sandronister/webcrawler/internal/infra/crawler"
 	"github.com/sandronister/webcrawler/internal/infra/parser/html"
@@ -9,6 +8,7 @@ import (
 	"github.com/sandronister/webcrawler/internal/infra/repository/file"
 	"github.com/sandronister/webcrawler/internal/infra/system"
 	"github.com/sandronister/webcrawler/internal/ports"
+	"github.com/sandronister/webcrawler/pkg/broker_cache/redis/types"
 	typelogger "github.com/sandronister/webcrawler/pkg/logger/types"
 )
 

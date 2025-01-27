@@ -3,7 +3,7 @@ package scrapping
 import (
 	"fmt"
 
-	"github.com/sandronister/go_broker/pkg/broker/types"
+	"github.com/sandronister/webcrawler/pkg/broker_cache/redis/types"
 )
 
 func (m *Model) WebServer() {

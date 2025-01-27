@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/sandronister/go_broker/pkg/broker/types"
+	"github.com/sandronister/webcrawler/pkg/broker_cache/redis/types"
 )
 
 func (r *Model) Read(url string) {

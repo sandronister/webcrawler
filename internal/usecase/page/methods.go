@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/sandronister/go_broker/pkg/broker/types"
+	"github.com/sandronister/webcrawler/pkg/broker_cache/redis/types"
 )
 
 func (u *Model) GetPage(url string) error {

@@ -6,18 +6,10 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/sandronister/go_broker/pkg/broker/types"
+	"github.com/sandronister/webcrawler/pkg/broker_cache/redis/types"
 )
 
-func (b *Model) Publish(message *types.Message) error {
-	messageByte, err := json.Marshal(message)
-	if err != nil {
-		return err
-	}
-	return b.client.LPush(context.Background(), message.Topic, messageByte).Err()
-}
-
-func (b *Model) ListenToQueue(config *types.ConfigBroker, message chan<- types.Message) error {
+func (m *Model) ListenToQueue(config *types.ConfigBroker, message chan<- types.Message) error {
 	if config == nil {
 		return types.ErrInvalidConfig
 	}
@@ -27,7 +19,7 @@ func (b *Model) ListenToQueue(config *types.ConfigBroker, message chan<- types.M
 	}
 
 	for {
-		res, err := b.client.BLPop(context.Background(), 0*time.Second, config.Topic...).Result()
+		res, err := m.client.BLPop(context.Background(), 0*time.Second, config.Topic...).Result()
 		if err != nil {
 			fmt.Println("Erro ao ler item da fila:", err)
 			continue
@@ -40,4 +32,12 @@ func (b *Model) ListenToQueue(config *types.ConfigBroker, message chan<- types.M
 		message <- tmp
 
 	}
+}
+
+func (m *Model) Publish(message *types.Message) error {
+	messageByte, err := json.Marshal(message)
+	if err != nil {
+		return err
+	}
+	return m.client.LPush(context.Background(), message.Topic, messageByte).Err()
 }

@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/sandronister/go_broker/pkg/broker/types"
 	"github.com/sandronister/webcrawler/config"
 	"github.com/sandronister/webcrawler/internal/di"
+	"github.com/sandronister/webcrawler/pkg/broker_cache/redis/types"
 )
 
 func main() {

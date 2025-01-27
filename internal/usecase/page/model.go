@@ -1,8 +1,8 @@
 package page
 
 import (
-	"github.com/sandronister/go_broker/pkg/broker/types"
 	"github.com/sandronister/webcrawler/config"
+	"github.com/sandronister/webcrawler/pkg/broker_cache/redis/types"
 	typelogger "github.com/sandronister/webcrawler/pkg/logger/types"
 )
 

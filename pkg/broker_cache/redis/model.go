@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/go-redis/redis/v8"
-	"github.com/sandronister/go_broker/pkg/broker/types"
+	"github.com/sandronister/webcrawler/pkg/broker_cache/redis/types"
 )
 
 type Model struct {
