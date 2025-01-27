@@ -1,9 +1,9 @@
 package di
 
 import (
-	"github.com/sandronister/go_broker/pkg/broker/factory"
 	"github.com/sandronister/webcrawler/config"
 	scrapping "github.com/sandronister/webcrawler/internal/service/scrappping"
+	"github.com/sandronister/webcrawler/pkg/broker_cache/redis"
 )
 
 func NewScracppingService(enviroment *config.Enviroment) (*scrapping.Model, error) {
@@ -13,11 +13,7 @@ func NewScracppingService(enviroment *config.Enviroment) (*scrapping.Model, erro
 		return nil, err
 	}
 
-	broker, err := factory.GetBroker()
-
-	if err != nil {
-		return nil, err
-	}
+	broker := redis.NewBroker("localhost", 6379)
 
 	server := NewServer(broker, logger, enviroment)
 	reader := NewReader(logger, broker, enviroment)
