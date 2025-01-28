@@ -32,8 +32,3 @@ type ConfigBroker struct {
 	AutoCommitIntervalMS string
 	Partition            int
 }
-
-type IBroker interface {
-	ListenToQueue(conf *ConfigBroker, message chan<- Message) error
-	Publish(message *Message) error
-}

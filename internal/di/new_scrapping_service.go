@@ -13,7 +13,11 @@ func NewScracppingService(enviroment *config.Enviroment) (*scrapping.Model, erro
 		return nil, err
 	}
 
-	broker := redis.NewBroker("localhost", 6379)
+	broker, err := redis.NewBroker("localhost", 6379)
+
+	if err != nil {
+		return nil, err
+	}
 
 	server := NewServer(broker, logger, enviroment)
 	reader, err := NewReader(logger, broker, enviroment)

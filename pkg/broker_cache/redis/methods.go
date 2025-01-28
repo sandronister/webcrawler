@@ -41,3 +41,7 @@ func (m *Model) Publish(message *types.Message) error {
 	}
 	return m.client.LPush(context.Background(), message.Topic, messageByte).Err()
 }
+
+func (m *Model) Ping() error {
+	return m.client.Ping(context.Background()).Err()
+}
