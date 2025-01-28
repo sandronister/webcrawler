@@ -5,11 +5,16 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/sandronister/go_broker/pkg/broker/types"
 	"github.com/sandronister/webcrawler/internal/dto"
+	"github.com/sandronister/webcrawler/pkg/system_memory_data/types"
 )
 
 func (r *Model) Read(message *dto.PageDTO) {
+
+	if message == nil {
+		r.log.Error("Reader", "Message is nil")
+		return
+	}
 
 	fmt.Printf("Reading url %s\n", message.URL)
 	link := make(chan dto.PageDTO)
@@ -21,7 +26,7 @@ func (r *Model) Read(message *dto.PageDTO) {
 	content, err := r.ReadContent(message.URL)
 
 	if err != nil {
-		return
+		fmt.Printf("Error reading url %s: %s\n", message.URL, err.Error())
 	}
 
 	for range 10 {
@@ -63,15 +68,19 @@ func (r *Model) SaveContent(url, content string) error {
 func (r *Model) SendLink(link <-chan dto.PageDTO) {
 	for l := range link {
 		content, err := json.Marshal(l)
+
 		if err != nil {
 			r.log.Error("Reader", fmt.Sprintf("Error marshalling link: %s", err.Error()))
-			fmt.Println("DEU RUIM")
 		}
 
 		msg := &types.Message{
 			Topic: r.env.BrokerTopic,
 			Value: content,
 		}
-		r.broker.Publish(msg)
+
+		if !r.cacher.Exists(l.URL) {
+			r.broker.Publish(msg)
+			r.cacher.Set(l.URL, time.Now().Format(time.RFC3339), 0)
+		}
 	}
 }

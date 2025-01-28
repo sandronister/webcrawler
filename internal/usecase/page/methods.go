@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/sandronister/go_broker/pkg/broker/types"
 	"github.com/sandronister/webcrawler/internal/dto"
+	"github.com/sandronister/webcrawler/pkg/system_memory_data/types"
 )
 
 func (u *Model) GetPage(request *dto.PageDTO) error {

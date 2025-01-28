@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/sandronister/go_broker/pkg/broker/types"
 	"github.com/sandronister/webcrawler/config"
 	"github.com/sandronister/webcrawler/internal/di"
+	"github.com/sandronister/webcrawler/pkg/system_memory_data/types"
 )
 
 func main() {
@@ -17,14 +17,13 @@ func main() {
 	env, err := config.LoadEnviroment()
 
 	if err != nil {
-		panic(err)
+		fmt.Println("Error loading enviroment variables")
 	}
 
 	service, err := di.NewScracppingService(env)
 
 	if err != nil {
-		fmt.Println("merda", err)
-		panic(err)
+		fmt.Printf("Error creating service: %s\n", err)
 	}
 
 	for range 8 {

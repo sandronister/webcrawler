@@ -1,9 +1,9 @@
 package di
 
 import (
-	"github.com/sandronister/go_broker/pkg/broker/factory"
 	"github.com/sandronister/webcrawler/config"
 	scrapping "github.com/sandronister/webcrawler/internal/service/scrappping"
+	"github.com/sandronister/webcrawler/pkg/system_memory_data/factory"
 )
 
 func NewScracppingService(enviroment *config.Enviroment) (*scrapping.Model, error) {
@@ -13,14 +13,20 @@ func NewScracppingService(enviroment *config.Enviroment) (*scrapping.Model, erro
 		return nil, err
 	}
 
-	broker, err := factory.GetBroker()
+	broker, err := factory.GetBroker(enviroment.BrokerHost, enviroment.BrokerPort)
 
 	if err != nil {
 		return nil, err
 	}
 
-	server := NewServer(broker, logger, enviroment)
-	reader, err := NewReader(logger, broker, enviroment)
+	cacher, err := factory.GetCacher(enviroment.BrokerHost, enviroment.BrokerPort, enviroment.BrokerDB)
+
+	if err != nil {
+		return nil, err
+	}
+
+	server := NewServer(broker, cacher, logger, enviroment)
+	reader, err := NewReader(logger, broker, cacher, enviroment)
 
 	if err != nil {
 		return nil, err
