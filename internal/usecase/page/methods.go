@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/sandronister/webcrawler/internal/dto"
-	"github.com/sandronister/webcrawler/pkg/broker_cache/types"
+	"github.com/sandronister/webcrawler/pkg/system_memory_data/types"
 )
 
 func (u *Model) GetPage(request *dto.PageDTO) error {

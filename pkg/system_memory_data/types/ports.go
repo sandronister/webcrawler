@@ -1,20 +1,22 @@
 package types
 
-type IServerMemData interface {
+import "time"
+
+type iserverMemData interface {
 	Ping() error
 }
 
 type IBroker interface {
-	IServerMemData
+	iserverMemData
 	ListenToQueue(conf *ConfigBroker, message chan<- Message) error
 	Publish(message *Message) error
 }
 
 type ICacher interface {
-	IServerMemData
-	Get(key string) ([]byte, error)
-	Set(key string, value []byte) error
-	Exists(key string) (bool, error)
+	iserverMemData
+	Get(key string) (string, error)
+	Set(key string, value string, expiration time.Duration) error
+	Exists(key string) bool
 	Delete(key string) error
 	Keys() ([]string, error)
 }

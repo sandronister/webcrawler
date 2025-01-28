@@ -4,8 +4,8 @@ import (
 	"github.com/sandronister/webcrawler/config"
 	"github.com/sandronister/webcrawler/internal/ports/ireader"
 	"github.com/sandronister/webcrawler/internal/ports/iserver"
-	"github.com/sandronister/webcrawler/pkg/broker_cache/types"
 	typelogger "github.com/sandronister/webcrawler/pkg/logger/types"
+	"github.com/sandronister/webcrawler/pkg/system_memory_data/types"
 )
 
 type Model struct {

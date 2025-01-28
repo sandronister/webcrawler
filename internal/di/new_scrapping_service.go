@@ -3,7 +3,7 @@ package di
 import (
 	"github.com/sandronister/webcrawler/config"
 	scrapping "github.com/sandronister/webcrawler/internal/service/scrappping"
-	"github.com/sandronister/webcrawler/pkg/broker_cache/redis"
+	"github.com/sandronister/webcrawler/pkg/system_memory_data/factory"
 )
 
 func NewScracppingService(enviroment *config.Enviroment) (*scrapping.Model, error) {
@@ -13,13 +13,15 @@ func NewScracppingService(enviroment *config.Enviroment) (*scrapping.Model, erro
 		return nil, err
 	}
 
-	broker, err := redis.NewBroker("localhost", 6379)
+	broker, err := factory.GetBroker(enviroment.BrokerHost, enviroment.BrokerPort)
 
 	if err != nil {
 		return nil, err
 	}
 
-	server := NewServer(broker, logger, enviroment)
+	cacher, err := factory.GetCacher(enviroment.BrokerHost, enviroment.BrokerPort, enviroment.BrokerDB)
+
+	server := NewServer(broker, cacher, logger, enviroment)
 	reader, err := NewReader(logger, broker, enviroment)
 
 	if err != nil {

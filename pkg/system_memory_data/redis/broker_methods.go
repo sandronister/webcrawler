@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/sandronister/webcrawler/pkg/broker_cache/types"
+	"github.com/sandronister/webcrawler/pkg/system_memory_data/types"
 )
 
 func (m *Model) ListenToQueue(config *types.ConfigBroker, message chan<- types.Message) error {
@@ -40,8 +40,4 @@ func (m *Model) Publish(message *types.Message) error {
 		return err
 	}
 	return m.client.LPush(context.Background(), message.Topic, messageByte).Err()
-}
-
-func (m *Model) Ping() error {
-	return m.client.Ping(context.Background()).Err()
 }
