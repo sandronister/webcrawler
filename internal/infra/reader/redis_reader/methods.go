@@ -16,11 +16,6 @@ func (r *Model) Read(message *dto.PageDTO) {
 		return
 	}
 
-	if r.cacher.Exists(message.URL) {
-		r.log.Info("Reader", fmt.Sprintf("URL %s already exists in cache", message.URL))
-		return
-	}
-
 	fmt.Printf("Reading url %s\n", message.URL)
 	link := make(chan dto.PageDTO)
 
@@ -31,7 +26,7 @@ func (r *Model) Read(message *dto.PageDTO) {
 	content, err := r.ReadContent(message.URL)
 
 	if err != nil {
-		return
+		fmt.Printf("Error reading url %s: %s\n", message.URL, err.Error())
 	}
 
 	for range 10 {
@@ -76,7 +71,6 @@ func (r *Model) SendLink(link <-chan dto.PageDTO) {
 
 		if err != nil {
 			r.log.Error("Reader", fmt.Sprintf("Error marshalling link: %s", err.Error()))
-			fmt.Println("DEU RUIM")
 		}
 
 		msg := &types.Message{
