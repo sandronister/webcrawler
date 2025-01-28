@@ -85,8 +85,6 @@ internal/
         page/
             methods.go
             model.go
-logs/
-    -2025-01-26.log
 pkg/
     logger/
         factory/
@@ -96,6 +94,17 @@ pkg/
             model.go
         types/
             model.go
+    system_memory_data
+      factory/
+        methods.go
+      redis/
+        broker_methods.go
+        cacher_methods.go
+        model.go
+        server_methods.go
+      types/
+        model.go
+        ports.go
 README.md
 ```
 
