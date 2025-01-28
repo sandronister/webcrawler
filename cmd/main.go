@@ -17,14 +17,13 @@ func main() {
 	env, err := config.LoadEnviroment()
 
 	if err != nil {
-		panic(err)
+		fmt.Println("Error loading enviroment variables")
 	}
 
 	service, err := di.NewScracppingService(env)
 
 	if err != nil {
-		fmt.Println("merda", err)
-		panic(err)
+		fmt.Printf("Error creating service: %s\n", err)
 	}
 
 	for range 8 {
