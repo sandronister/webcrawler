@@ -15,15 +15,17 @@ type Model struct {
 	repository irepository.Type
 	log        typelogger.ILogger
 	broker     types.IBroker
+	cacher     types.ICacher
 	env        *config.Enviroment
 }
 
-func NewReader(crawler icrawler.Type, parser iparser.Type, repository irepository.Type, log typelogger.ILogger, broker types.IBroker, env *config.Enviroment) *Model {
+func NewReader(crawler icrawler.Type, parser iparser.Type, repository irepository.Type, log typelogger.ILogger, broker types.IBroker, cacher types.ICacher, env *config.Enviroment) *Model {
 	return &Model{
 		crawler:    crawler,
 		parser:     parser,
 		repository: repository,
 		broker:     broker,
+		cacher:     cacher,
 		log:        log,
 		env:        env,
 	}

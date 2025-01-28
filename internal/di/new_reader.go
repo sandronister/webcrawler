@@ -8,12 +8,12 @@ import (
 	"github.com/sandronister/webcrawler/pkg/system_memory_data/types"
 )
 
-func NewReader(logger typelogger.ILogger, broker types.IBroker, env *config.Enviroment) (ireader.Type, error) {
+func NewReader(logger typelogger.ILogger, broker types.IBroker, cacher types.ICacher, env *config.Enviroment) (ireader.Type, error) {
 	parser := newParser()
 	repository, err := newRepository(parser, logger, env)
 
 	if err != nil {
 		return nil, err
 	}
-	return redisreader.NewReader(newCrawler(logger), parser, repository, logger, broker, env), nil
+	return redisreader.NewReader(newCrawler(logger), parser, repository, logger, broker, cacher, env), nil
 }

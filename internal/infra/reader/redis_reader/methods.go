@@ -11,6 +11,16 @@ import (
 
 func (r *Model) Read(message *dto.PageDTO) {
 
+	if message == nil {
+		r.log.Error("Reader", "Message is nil")
+		return
+	}
+
+	if r.cacher.Exists(message.URL) {
+		r.log.Info("Reader", fmt.Sprintf("URL %s already exists in cache", message.URL))
+		return
+	}
+
 	fmt.Printf("Reading url %s\n", message.URL)
 	link := make(chan dto.PageDTO)
 
@@ -63,6 +73,7 @@ func (r *Model) SaveContent(url, content string) error {
 func (r *Model) SendLink(link <-chan dto.PageDTO) {
 	for l := range link {
 		content, err := json.Marshal(l)
+
 		if err != nil {
 			r.log.Error("Reader", fmt.Sprintf("Error marshalling link: %s", err.Error()))
 			fmt.Println("DEU RUIM")
@@ -72,6 +83,10 @@ func (r *Model) SendLink(link <-chan dto.PageDTO) {
 			Topic: r.env.BrokerTopic,
 			Value: content,
 		}
-		r.broker.Publish(msg)
+
+		if !r.cacher.Exists(l.URL) {
+			r.broker.Publish(msg)
+			r.cacher.Set(l.URL, time.Now().Format(time.RFC3339), 0)
+		}
 	}
 }

@@ -21,8 +21,12 @@ func NewScracppingService(enviroment *config.Enviroment) (*scrapping.Model, erro
 
 	cacher, err := factory.GetCacher(enviroment.BrokerHost, enviroment.BrokerPort, enviroment.BrokerDB)
 
+	if err != nil {
+		return nil, err
+	}
+
 	server := NewServer(broker, cacher, logger, enviroment)
-	reader, err := NewReader(logger, broker, enviroment)
+	reader, err := NewReader(logger, broker, cacher, enviroment)
 
 	if err != nil {
 		return nil, err
