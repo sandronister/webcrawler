@@ -3,7 +3,7 @@ package scrapping
 import (
 	"encoding/json"
 
-	"github.com/sandronister/webcrawler/internal/dto"
+	typesParser "github.com/sandronister/webcrawler/pkg/parser_html/types"
 	"github.com/sandronister/webcrawler/pkg/system_memory_data/types"
 )
 
@@ -27,7 +27,7 @@ func (m *Model) ReadMessage(message <-chan types.Message) {
 
 	for msg := range message {
 
-		var dtoPage dto.PageDTO
+		var dtoPage typesParser.PageDTO
 
 		err := json.Unmarshal(msg.Value, &dtoPage)
 

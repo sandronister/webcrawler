@@ -1,9 +1,9 @@
-package html
+package regexparser
 
 import (
 	"regexp"
 
-	"github.com/sandronister/webcrawler/internal/dto"
+	"github.com/sandronister/webcrawler/pkg/parser_html/types"
 )
 
 func (p *Model) GetTagContet(input, tag string) []string {
@@ -23,12 +23,12 @@ func (p *Model) RemoveHTMLTags(input string) string {
 	return re.ReplaceAllString(input, "")
 }
 
-func (p *Model) ExtractLinks(content, urlFilter string, cPageDTO chan<- dto.PageDTO) {
+func (p *Model) ExtractLinks(content, urlFilter string, cPageDTO chan<- types.PageDTO) {
 	re := regexp.MustCompile(`href="(http[s]?://[^"]+)"`)
 	matches := re.FindAllStringSubmatch(content, -1)
 	for _, match := range matches {
 		if p.filter.Filter(match, urlFilter) {
-			cPageDTO <- dto.PageDTO{URL: match[1], Filter: urlFilter}
+			cPageDTO <- types.PageDTO{URL: match[1], Filter: urlFilter}
 		}
 	}
 }

@@ -2,3 +2,4 @@ logs/
 output/
 *.env
 *.db
+.DS_STORE

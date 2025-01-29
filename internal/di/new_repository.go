@@ -10,12 +10,12 @@ import (
 	"github.com/sandronister/webcrawler/internal/infra/repository/file"
 	"github.com/sandronister/webcrawler/internal/infra/repository/sqlite"
 	"github.com/sandronister/webcrawler/internal/infra/system"
-	"github.com/sandronister/webcrawler/internal/ports/iparser"
 	"github.com/sandronister/webcrawler/internal/ports/irepository"
 	"github.com/sandronister/webcrawler/pkg/logger/types"
+	parserType "github.com/sandronister/webcrawler/pkg/parser_html/types"
 )
 
-func newFileRepository(parser iparser.Type) irepository.Type {
+func newFileRepository(parser parserType.IPort) irepository.Type {
 	system := system.NewOS()
 	return file.NewFileRepository("output", parser, system)
 }
@@ -66,7 +66,7 @@ func NewBadgerRepository(env *config.Enviroment) (irepository.Type, error) {
 	return badger.NewBadgerRepository(env)
 }
 
-func newRepository(parser iparser.Type, logger types.ILogger, env *config.Enviroment) (irepository.Type, error) {
+func newRepository(parser parserType.IPort, logger types.ILogger, env *config.Enviroment) (irepository.Type, error) {
 	switch RepositoryKind(env.RepositoryKind) {
 	case FileRepository, "":
 		return newFileRepository(parser), nil
