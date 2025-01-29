@@ -1,10 +1,10 @@
 package di
 
 import (
-	"github.com/sandronister/webcrawler/internal/infra/parser/html"
-	"github.com/sandronister/webcrawler/internal/ports/iparser"
+	regexparser "github.com/sandronister/webcrawler/pkg/parser_html/regex_parser"
+	"github.com/sandronister/webcrawler/pkg/parser_html/types"
 )
 
-func newParser() iparser.Type {
-	return html.NewHtmlParser(newFilter())
+func newParser() types.IPort {
+	return regexparser.NewRegexParser(newFilter())
 }

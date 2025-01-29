@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/sandronister/webcrawler/internal/dto"
+	parsertypes "github.com/sandronister/webcrawler/pkg/parser_html/types"
 	"github.com/sandronister/webcrawler/pkg/system_memory_data/types"
 )
 
-func (u *Model) GetPage(request *dto.PageDTO) error {
+func (u *Model) GetPage(request *parsertypes.PageDTO) error {
 	_, err := http.Get(request.URL)
 
 	if err != nil {

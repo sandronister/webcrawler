@@ -4,8 +4,8 @@ POST http://localhost:8080/api/v1/start
 Content-Type: application/json
 
 {
-    "url": "https://www.jornalcruzeiro.com.br",
-    "filter":"https://www.jornalcruzeiro.com.br"
-  
+    "url": "https://github.com/sandronister",
+    "filter":"https://github.com/sandronister"
+
 }
 

@@ -5,15 +5,13 @@ import (
 )
 
 type Crawler struct {
-	links   []string
-	visited []string
-	logger  types.ILogger
+	links  []string
+	logger types.ILogger
 }
 
 func NewCrawler(logger types.ILogger) *Crawler {
 	return &Crawler{
-		links:   []string{},
-		visited: []string{},
-		logger:  logger,
+		links:  []string{},
+		logger: logger,
 	}
 }

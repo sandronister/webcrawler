@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/sandronister/webcrawler/internal/dto"
+	parserTypes "github.com/sandronister/webcrawler/pkg/parser_html/types"
 	"github.com/sandronister/webcrawler/pkg/system_memory_data/types"
 )
 
-func (r *Model) Read(message *dto.PageDTO) {
+func (r *Model) Read(message *parserTypes.PageDTO) {
 
 	if message == nil {
 		r.log.Error("Reader", "Message is nil")
@@ -17,7 +17,7 @@ func (r *Model) Read(message *dto.PageDTO) {
 	}
 
 	fmt.Printf("Reading url %s\n", message.URL)
-	link := make(chan dto.PageDTO)
+	link := make(chan parserTypes.PageDTO)
 
 	if r.env.TimeSleep > 0 {
 		time.Sleep(time.Duration(r.env.TimeSleep) * time.Second)
@@ -65,7 +65,7 @@ func (r *Model) SaveContent(url, content string) error {
 	return nil
 }
 
-func (r *Model) SendLink(link <-chan dto.PageDTO) {
+func (r *Model) SendLink(link <-chan parserTypes.PageDTO) {
 	for l := range link {
 		content, err := json.Marshal(l)
 

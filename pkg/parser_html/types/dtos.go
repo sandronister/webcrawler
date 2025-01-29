@@ -1,4 +1,4 @@
-package dto
+package types
 
 type PageDTO struct {
 	URL    string `json:"url"`

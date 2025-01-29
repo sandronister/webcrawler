@@ -3,15 +3,11 @@ package di
 import (
 	"github.com/sandronister/webcrawler/config"
 	scrapping "github.com/sandronister/webcrawler/internal/service/scrappping"
+	"github.com/sandronister/webcrawler/pkg/logger/types"
 	"github.com/sandronister/webcrawler/pkg/system_memory_data/factory"
 )
 
-func NewScracppingService(enviroment *config.Enviroment) (*scrapping.Model, error) {
-	logger, err := NewLogger(enviroment.LogPattern)
-
-	if err != nil {
-		return nil, err
-	}
+func NewScracppingService(enviroment *config.Enviroment, logger types.ILogger) (*scrapping.Model, error) {
 
 	broker, err := factory.GetBroker(enviroment.BrokerHost, enviroment.BrokerPort)
 
