@@ -6,6 +6,7 @@ import (
 
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/sandronister/webcrawler/config"
+	"github.com/sandronister/webcrawler/internal/infra/repository/badger"
 	"github.com/sandronister/webcrawler/internal/infra/repository/file"
 	"github.com/sandronister/webcrawler/internal/infra/repository/sqlite"
 	"github.com/sandronister/webcrawler/internal/infra/system"
@@ -20,10 +21,10 @@ func newFileRepository(parser iparser.Type) irepository.Type {
 }
 
 func getConnection(env *config.Enviroment) (*sql.DB, error) {
-	fileSQLite := env.SQLiteFile
+	fileSQLite := env.RepositoryFile
 
 	if fileSQLite == "" {
-		fileSQLite = "crawler.db"
+		return nil, fmt.Errorf("repository file not found")
 	}
 
 	conn, err := sql.Open("sqlite3", fileSQLite)
@@ -61,6 +62,10 @@ func newSQLiteRepository(env *config.Enviroment, logger types.ILogger) (ireposit
 	return sqlite, nil
 }
 
+func NewBadgerRepository(env *config.Enviroment) (irepository.Type, error) {
+	return badger.NewBadgerRepository(env)
+}
+
 func newRepository(parser iparser.Type, logger types.ILogger, env *config.Enviroment) (irepository.Type, error) {
 
 	if env.RepositoryKind == "file" || env.RepositoryKind == "" {
@@ -69,6 +74,10 @@ func newRepository(parser iparser.Type, logger types.ILogger, env *config.Enviro
 
 	if env.RepositoryKind == "sqlite" {
 		return newSQLiteRepository(env, logger)
+	}
+
+	if env.RepositoryKind == "badger" {
+		return NewBadgerRepository(env)
 	}
 
 	return nil, fmt.Errorf("repository type %s not found", env.RepositoryKind)

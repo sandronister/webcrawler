@@ -17,7 +17,7 @@ type Enviroment struct {
 	BrokerKind     string `envconfig:"BROKER_KIND"`
 	TimeSleep      int    `envconfig:"TIME_SLEEP"`
 	RepositoryKind string `envconfig:"REPOSITORY_KIND"`
-	SQLiteFile     string `envconfig:"SQLITE_FILE"`
+	RepositoryFile string `envconfig:"REPOSITORY_FILE"`
 }
 
 func LoadEnviroment() (*Enviroment, error) {
