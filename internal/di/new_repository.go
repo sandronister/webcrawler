@@ -67,18 +67,14 @@ func NewBadgerRepository(env *config.Enviroment) (irepository.Type, error) {
 }
 
 func newRepository(parser iparser.Type, logger types.ILogger, env *config.Enviroment) (irepository.Type, error) {
-
-	if env.RepositoryKind == "file" || env.RepositoryKind == "" {
+	switch RepositoryKind(env.RepositoryKind) {
+	case FileRepository, "":
 		return newFileRepository(parser), nil
-	}
-
-	if env.RepositoryKind == "sqlite" {
+	case SQLiteRepository:
 		return newSQLiteRepository(env, logger)
-	}
-
-	if env.RepositoryKind == "badger" {
+	case BadgerRepository:
 		return NewBadgerRepository(env)
+	default:
+		return nil, fmt.Errorf("repository type %s not found", env.RepositoryKind)
 	}
-
-	return nil, fmt.Errorf("repository type %s not found", env.RepositoryKind)
 }
