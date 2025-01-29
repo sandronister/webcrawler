@@ -12,7 +12,9 @@ func (c *Crawler) Crawl(url string) (string, error) {
 			"(KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36",
 		"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp," +
 			"image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
-		"Connection": "keep-alive",
+		"Connection":      "keep-alive",
+		"Accept-Encoding": "gzip, deflate, br, zstd",
+		"Host":            "httpbin.io",
 	}
 
 	req, err := http.NewRequest("GET", url, nil)
